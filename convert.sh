@@ -1,0 +1,1 @@
+python convert.py -s ./data/scan40

@@ -117,7 +117,7 @@ def training(dataset, opt, pipe, test_frequency, save_frequency, checkpoint_freq
                 tb_writer.add_scalar('train_loss_patches/normal_loss', ema_normal_for_log, iteration)
 
             training_report(tb_writer, iteration, Ll1, loss, l1_loss, iter_start.elapsed_time(iter_end), test_frequency, scene, render, (pipe, background))
-            if iteration % save_frequency == 0:
+            if iteration % save_frequency == 0 or iteration == int(opt.iterations):
                 print("\n[ITER {}] Saving Gaussians".format(iteration))
                 scene.save(iteration)
 
@@ -139,7 +139,7 @@ def training(dataset, opt, pipe, test_frequency, save_frequency, checkpoint_freq
                 gaussians.optimizer.step()
                 gaussians.optimizer.zero_grad(set_to_none = True)
 
-            if (iteration % checkpoint_frequency == 0):
+            if iteration % checkpoint_frequency == 0 or iteration == int(opt.iterations):
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))
                 torch.save((gaussians.capture(), iteration), scene.model_path + "/chkpnt" + str(iteration) + ".pth")
 
